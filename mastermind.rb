@@ -19,36 +19,50 @@
 #the one who has the most points after the agreed-upon number of games are played.
 
 module Mastermind
-	#Player needs to keep track of how many wins they have.
+	# the player class will need to state whether the current player is the codebreaker or
+	# codemaster. Will use status for this purpose
 	class Player
 		attr_reader :name, :wins
-		def initialize(name, wins = 0)
+		def initialize(name, points = 0, status)
 			@name = name
-			@wins = wins
+			@points = points
+			@status = status
 		end
 	end
 
 	class Board
+		def initialize
+		end
 	end
 
 	class Peg
+		def initialize(colour)
+			@colour = colour
+		end
 	end
 
 	class Game
 	end
 end
-=BEGIN
+=*begin
 classes:
 	player
 		name
-		number of wins
+		points
+		status
 
 	board
-		code
+		code (set by computer or another player)
 		guesses (stored in an array?)
+		display_board method to show the current board
 
 	peg
-		colour
+		colour (perhaps created up front and then referenced in the guesses array?)
 
 	game
-=END
+		get player information
+		start game loop
+		check each turn against the code
+		check for a winner
+		if there is a winner switch roles
+=end
