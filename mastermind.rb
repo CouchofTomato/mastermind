@@ -23,7 +23,8 @@ module Mastermind
 	# codemaster. Will use status for this purpose
 	class Player
 		attr_reader :name, :wins
-		def initialize(name, points = 0, status)
+		attr_accessor :status
+		def initialize(name, status, points = 0)
 			@name = name
 			@points = points
 			@status = status
@@ -31,17 +32,33 @@ module Mastermind
 	end
 
 	class Board
+		attr_accessor :board
 		def initialize
+			@board = []
 		end
-	end
 
-	class Peg
-		def initialize(colour)
-			@colour = colour
+		def display_board
 		end
 	end
 
 	class Game
+		def initialize
+			start_game
+		end
+
+		def start_game
+			get_player_information
+		end
+
+		def get_player_information
+			puts "Please enter your name:"
+			player_name = gets.chomp.capitalize
+			create_player(player_name)
+		end
+
+		def create_player(name)
+			player1 = Mastermind::Player.new(name, :codebreaker)
+		end
 	end
 end
 =*begin
@@ -56,13 +73,11 @@ classes:
 		guesses (stored in an array?)
 		display_board method to show the current board
 
-	peg
-		colour (perhaps created up front and then referenced in the guesses array?)
-
 	game
 		get player information
 		start game loop
 		check each turn against the code
 		check for a winner
+		assign black pegs and/or white pegs
 		if there is a winner switch roles
 =end
