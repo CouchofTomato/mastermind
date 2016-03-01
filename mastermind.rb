@@ -33,13 +33,19 @@ module Mastermind
 
 	class Board
 		attr_accessor :board
-		attr_reader :code
+		attr_reader :code, :code_array
+		@@pegs = [:R, :Y, :B, :G, :O, :P]
 		def initialize(code)
 			@board = []
 			@code = code
+			@@pegs
 		end
 
 		def display_board
+		end
+
+		def self.pegs
+			@@pegs
 		end
 	end
 
@@ -64,11 +70,13 @@ module Mastermind
 		end
 
 		def set_code
-
+			@code_array = []
+			4.times {@code_array << Mastermind::Board.pegs.sample}
+			p @code_array
 		end
 	end
 end
-=*begin
+=begin
 classes:
 	player
 		name
@@ -76,6 +84,7 @@ classes:
 		status
 
 	board
+		pegs that can be chosen randomly
 		code (set by computer or another player) and stored in array
 		guesses (stored in an array?)
 		display_board method to show the current board
@@ -88,3 +97,5 @@ classes:
 		assign black pegs and/or white pegs
 		if there is a winner switch roles
 =end
+
+Mastermind::Game.new
