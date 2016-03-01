@@ -33,8 +33,10 @@ module Mastermind
 
 	class Board
 		attr_accessor :board
-		def initialize
+		attr_reader :code
+		def initialize(code)
 			@board = []
+			@code = code
 		end
 
 		def display_board
@@ -48,6 +50,7 @@ module Mastermind
 
 		def start_game
 			get_player_information
+			set_code
 		end
 
 		def get_player_information
@@ -59,6 +62,10 @@ module Mastermind
 		def create_player(name)
 			player1 = Mastermind::Player.new(name, :codebreaker)
 		end
+
+		def set_code
+
+		end
 	end
 end
 =*begin
@@ -69,7 +76,7 @@ classes:
 		status
 
 	board
-		code (set by computer or another player)
+		code (set by computer or another player) and stored in array
 		guesses (stored in an array?)
 		display_board method to show the current board
 
