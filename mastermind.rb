@@ -33,12 +33,11 @@ module Mastermind
 
 	class Board
 		attr_accessor :board
-		attr_reader :code, :code_array
-		@@pegs = [:R, :Y, :B, :G, :O, :P]
+		attr_reader :code
+		@@pegs = {:R => "Red", :Y => "Yellow", :B => "Blue", :G => "Green", :O => "Orange", :P => "Pink"}
 		def initialize(code)
 			@board = []
 			@code = code
-			@@pegs
 		end
 
 		def display_board
@@ -50,13 +49,18 @@ module Mastermind
 	end
 
 	class Game
+		attr_accessor :game_board, :number_of_guesses
+		attr_reader :code_array, :player1
 		def initialize
+			@number_of_guesses = 0
 			start_game
 		end
 
 		def start_game
 			get_player_information
 			set_code
+			create_board
+			game_loop
 		end
 
 		def get_player_information
@@ -66,13 +70,27 @@ module Mastermind
 		end
 
 		def create_player(name)
-			player1 = Mastermind::Player.new(name, :codebreaker)
+			@player1 = Mastermind::Player.new(name, :codebreaker)
 		end
 
 		def set_code
 			@code_array = []
 			4.times {@code_array << Mastermind::Board.pegs.sample}
-			p @code_array
+		end
+
+		def create_board
+			@game_board = Mastermind::Board.new(@code_array)
+		end
+
+		def game_loop
+			@game_won = false
+			while !@game_won
+				intro
+				puts "#{@player1.name} Please enter the code"
+			end
+		end
+
+		def intro
 		end
 	end
 end
@@ -91,7 +109,7 @@ classes:
 
 	game
 		get player information
-		start game loop
+		start game loop (need to remember number of turns)
 		check each turn against the code
 		check for a winner
 		assign black pegs and/or white pegs
