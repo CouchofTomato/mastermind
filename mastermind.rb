@@ -41,6 +41,9 @@ module Mastermind
 		end
 
 		def display_board
+			@board.each do |row|
+				print row.to_s + "\n"
+			end
 		end
 
 		def self.pegs
@@ -60,6 +63,7 @@ module Mastermind
 			get_player_information
 			set_code
 			create_board
+			intro
 			game_loop
 		end
 
@@ -75,7 +79,7 @@ module Mastermind
 
 		def set_code
 			@code_array = []
-			4.times {@code_array << Mastermind::Board.pegs.sample}
+			4.times {@code_array << Mastermind::Board.pegs.keys.sample}
 		end
 
 		def create_board
@@ -86,11 +90,32 @@ module Mastermind
 			@game_won = false
 			while !@game_won
 				intro
-				puts "#{@player1.name} Please enter the code"
+				@game_board.display_board
+				puts "#{@player1.name} Please enter your code guess"
+				code_guess = gets.chomp.upcase
+				while !check_guess_valid(code_guess)
+					puts "Your input was not correct. Please try again"
+					code_guess = gets.chomp.upcase
+					check_guess_valid(code_guess)
+				end
 			end
 		end
 
 		def intro
+			puts "The peg colour options are: "
+			Mastermind::Board.pegs.each do |key, val|
+				puts "#{key.to_s}: #{val}"
+			end
+			puts "Please enter four colours using the corresponding letter."
+			puts "Example. To enter Red, Red, Yellow, Green as an option you should enter RRYG and then press enter"
+		end
+
+		def check_guess_valid(code)
+			return false if code.length != 4
+			code.split("").each do |val|
+				return false unless Mastermind::Board.pegs.keys.to_s.include?(val)
+			end
+			return true
 		end
 	end
 end
