@@ -56,11 +56,11 @@ module Mastermind
 		attr_reader :code_array, :player1
 		def initialize
 			@number_of_guesses = 0
+			get_player_information
 			start_game
 		end
 
 		def start_game
-			get_player_information
 			set_code
 			create_board
 			intro
@@ -92,6 +92,7 @@ module Mastermind
 				intro
 				@game_board.display_board
 				code_guess = get_code_guess
+				code_guess = check_guess_against_code(code_guess)
 				@game_board.board << code_guess
 			end
 		end
@@ -131,28 +132,11 @@ module Mastermind
 			end
 			return true
 		end
+
+		def check_guess_against_code(code)
+			
+		end
 	end
 end
-=begin
-classes:
-	player
-		name
-		points
-		status
-
-	board
-		pegs that can be chosen randomly
-		code (set by computer or another player) and stored in array
-		guesses (stored in an array?)
-		display_board method to show the current board
-
-	game
-		get player information
-		start game loop (need to remember number of turns)
-		check each turn against the code
-		check for a winner
-		assign black pegs and/or white pegs
-		if there is a winner switch roles
-=end
 
 Mastermind::Game.new
