@@ -91,13 +91,8 @@ module Mastermind
 			while !@game_won
 				intro
 				@game_board.display_board
-				puts "#{@player1.name} Please enter your code guess"
-				code_guess = gets.chomp.upcase
-				while !check_guess_valid(code_guess)
-					puts "Your input was not correct. Please try again"
-					code_guess = gets.chomp.upcase
-					check_guess_valid(code_guess)
-				end
+				code_guess = get_code_guess
+				@game_board.board << code_guess
 			end
 		end
 
@@ -110,10 +105,29 @@ module Mastermind
 			puts "Example. To enter Red, Red, Yellow, Green as an option you should enter RRYG and then press enter"
 		end
 
-		def check_guess_valid(code)
+		def get_code_guess
+			puts "#{@player1.name} Please enter your code guess"
+			code_guess = gets.chomp.upcase
+			while !check_guess_valid?(code_guess) || !check_guess_unique?(code_guess)
+					puts "Your input was incorrect or you've already guessed this code. Please try again"
+					code_guess = gets.chomp.upcase
+					check_guess_valid?(code_guess)
+			end
+			code_guess
+		end
+
+		def check_guess_valid?(code)
 			return false if code.length != 4
 			code.split("").each do |val|
 				return false unless Mastermind::Board.pegs.keys.to_s.include?(val)
+			end
+			return true
+		end
+
+		def check_guess_unique?(code)
+			return true if @game_board.board.empty?
+			@game_board.board.each do |val|
+				return false if val == code
 			end
 			return true
 		end
