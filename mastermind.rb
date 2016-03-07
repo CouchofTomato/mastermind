@@ -93,6 +93,7 @@ module Mastermind
 				@game_board.display_board
 				code_guess = get_code_guess
 				code_guess = check_guess_against_code(code_guess)
+				check_guess_against_code(code_guess) ? @game_won = true : code_guess << guess_feedback(code_guess)
 				@game_board.board << code_guess
 			end
 		end
@@ -134,7 +135,17 @@ module Mastermind
 		end
 
 		def check_guess_against_code(code)
-			
+			return true if code == @game_board.code
+			return false
+		end
+
+		def code_feedback(code)
+			return_array = []
+			code.each_with_index do |val, index|
+				if code[index] == @game_board.code[index]
+					return_array << :BP
+				elsif @game_board.code.any? {|val| val }
+			end
 		end
 	end
 end
