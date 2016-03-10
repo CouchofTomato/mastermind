@@ -141,10 +141,14 @@ module Mastermind
 
 		def code_feedback(code)
 			return_array = []
-			code.each_with_index do |val, index|
-				if code[index] == @game_board.code[index]
+			guess_array = code
+			code_array = @game_board.code
+			guess_array.each_with_index do |val, index|
+				if guess_array[index] == code_array[index]
 					return_array << :BP
-				elsif @game_board.code.any? {|val| val }
+					guess_array.delete_at(guess_array[index])
+					code_array.delete_at(code_array[index])
+				end
 			end
 		end
 	end
