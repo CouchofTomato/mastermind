@@ -89,7 +89,6 @@ module Mastermind
 		def game_loop
 			@game_won = false
 			while !@game_won
-				p @game_board.code
 				return_array = []
 				intro
 				@game_board.display_board
@@ -159,7 +158,6 @@ module Mastermind
 			white_pieces.length.times do
 				return_array << :WP
 			end
-			p return_array
 			return_array
 		end
 
