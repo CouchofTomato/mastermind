@@ -63,8 +63,8 @@ module Mastermind
 		def start_game
 			set_code
 			create_board
-			intro
 			game_loop
+			game_feedback
 		end
 
 		def get_player_information
@@ -89,12 +89,16 @@ module Mastermind
 		def game_loop
 			@game_won = false
 			while !@game_won
+				p @game_board.code
+				return_array = []
 				intro
 				@game_board.display_board
 				code_guess = get_code_guess
-				code_guess = check_guess_against_code(code_guess)
-				check_guess_against_code(code_guess) ? @game_won = true : code_guess << guess_feedback(code_guess)
-				@game_board.board << code_guess
+				check_guess_against_code(code_guess) ? @game_won = true : return_array << guess_feedback(code_guess)
+				@game_board.board << (code_guess + return_array)
+				@number_of_guesses += 1
+				@game_won = true if @number_of_guesses == 12
+				system "clear" or system "cls"
 			end
 		end
 
@@ -114,8 +118,9 @@ module Mastermind
 					puts "Your input was incorrect or you've already guessed this code. Please try again"
 					code_guess = gets.chomp.upcase
 					check_guess_valid?(code_guess)
+					check_guess_unique?(code_guess)
 			end
-			code_guess
+			code_guess.split("").map{|val| val.to_sym}
 		end
 
 		def check_guess_valid?(code)
@@ -139,16 +144,30 @@ module Mastermind
 			return false
 		end
 
-		def code_feedback(code)
+		def guess_feedback(code)
 			return_array = []
-			guess_array = code
-			code_array = @game_board.code
+			guess_array = code.dup
+			code_array = @game_board.code.dup
 			guess_array.each_with_index do |val, index|
 				if guess_array[index] == code_array[index]
 					return_array << :BP
-					guess_array.delete_at(guess_array[index])
-					code_array.delete_at(code_array[index])
+					guess_array.delete_at(index)
+					code_array.delete_at(index)
 				end
+			end
+			white_pieces = guess_array.find_all {|val| code_array.include?(val)}
+			white_pieces.length.times do
+				return_array << :WP
+			end
+			p return_array
+			return_array
+		end
+
+		def game_feedback
+			if @game_won
+				puts "Congratulations #{@player1.name}. You won"
+			else
+				puts "Sorry #{@player1.name}. You didn't guess the code"
 			end
 		end
 	end
