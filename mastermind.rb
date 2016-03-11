@@ -88,7 +88,8 @@ module Mastermind
 
 		def game_loop
 			@game_won = false
-			while !@game_won
+			@game_not_won = false
+			while !@game_won && !@game_not_won
 				return_array = []
 				intro
 				@game_board.display_board
@@ -96,7 +97,7 @@ module Mastermind
 				check_guess_against_code(code_guess) ? @game_won = true : return_array << guess_feedback(code_guess)
 				@game_board.board << (code_guess + return_array)
 				@number_of_guesses += 1
-				@game_won = true if @number_of_guesses == 12
+				@game_not_won = true if @number_of_guesses == 12
 				system "clear" or system "cls"
 			end
 		end
